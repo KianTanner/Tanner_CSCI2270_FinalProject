@@ -21,8 +21,9 @@ int main(int argc, char* argv[]) {
 	}
 	
 	mTree.printTree();
-	std::string b = "The quick brown fox jumps over the yellow dog.";
-	std::cout << b << "\n" << mTree.engToMorse("The quick brown fox jumps over the yellow dog.") << std::endl;
-	
+	std::string a = "The quick brown fox jumps over the yellow dog.";
+	std::string b = mTree.engToMorse(a);
+	std::string c = mTree.morseToEngMult(b);
+	std::cout << a << "\n" << b << "\n" << c << std::endl;
 	return 0;
 }

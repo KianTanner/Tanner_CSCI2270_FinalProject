@@ -24,6 +24,7 @@ class MorseTree {
 		~MorseTree();
 		void addNode(char inEngChar, std::string inMorse);
 		std::string engToMorse(std::string inString);
+		std::string morseToEngMult(std::string inMorse);
 		char morseToEng(std::string inMorse);
 		void printTree();
 	

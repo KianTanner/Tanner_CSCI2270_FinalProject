@@ -62,7 +62,6 @@ void MorseTree::addNode(char inEngChar, std::string inMorse) {
 		parent->right = toAdd;
 		toAdd->parent = parent;
 	}
-	std::cout << "Added " << inEngChar << " as " << inMorse << " as a child of " << toAdd->parent->engChar << std::endl; //del later
 	return;
 }
 
@@ -89,7 +88,7 @@ std::string MorseTree::engToMorse(char inChar) {
 		index = int (inChar) - int ('0') + 26;
 		outString = orderedMorse[index];
 	} else if (inChar == ' ') {
-		outString = "  ";
+		outString = " ";
 	} else {
 		outString = "error";
 		for (int i = 0; i < 13; i++) {
@@ -97,6 +96,29 @@ std::string MorseTree::engToMorse(char inChar) {
 				index = i;
 		}
 		outString = nonAlphaNumMorse[index];
+	}
+	return outString;
+}
+
+std::string MorseTree::morseToEngMult(std::string inMorse) {
+	std::string outString;
+	inMorse += "/";
+	char a;
+	int sIndex = 0;
+	while (sIndex != inMorse.length()) {
+		for (int i = sIndex; i < inMorse.length(); i++) {
+			if (inMorse[i] == '/' || inMorse[i] == ' ' || i == inMorse.length() - 1) {
+				if (i == inMorse.length())
+					a = morseToEng(inMorse.substr(sIndex));
+				else
+					a = morseToEng(inMorse.substr(sIndex, (i-sIndex)));
+				outString += a;
+				if (int (inMorse[i]) == 32)
+					outString += " ";
+				sIndex = ++i;				
+				break;
+			}
+		}
 	}
 	return outString;
 }
@@ -110,7 +132,7 @@ char MorseTree::morseToEng(std::string inMorse) {
 		else if (inMorse[i] == '-')
 			temp = temp->right;
 		else
-			return '!';
+			return '&';
 	}
 	return temp->engChar;
 }	
