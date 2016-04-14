@@ -23,12 +23,14 @@ class MorseTree {
 		MorseTree();
 		~MorseTree();
 		void addNode(char inEngChar, std::string inMorse);
+		std::string engToMorse(std::string inString);
 		char morseToEng(std::string inMorse);
 		void printTree();
 	
 	protected:
 	private:
 		MorseNode *root;
+		std::string engToMorse(char inChar);
 		void printTree(MorseNode *node);
 };
 
