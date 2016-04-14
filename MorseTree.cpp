@@ -72,7 +72,7 @@ std::string MorseTree::engToMorse(std::string inString) {
 		indivChar = engToMorse(inString[i]);
 		if (indivChar != "error")
 			outString += indivChar;
-		if (engToMorse(inString[i+1]) != "  ")
+		if (inString[i+1] != ' ' && inString[i] != ' ' && inString[i+1] != '\0')
 			outString += "/";
 	}
 	return outString;
