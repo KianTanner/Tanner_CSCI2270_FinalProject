@@ -1,4 +1,5 @@
 #include "MorseTree.cpp"
+#include "wav.cpp"
 
 int main(int argc, char* argv[]) {
 	char cArray[58] = {'E', 'T', 'I', 'A', 'N', 'M', 'S', 'U', 'R', 'W', 
@@ -20,10 +21,16 @@ int main(int argc, char* argv[]) {
 		mTree.addNode(cArray[i], sArray[i]);
 	}
 	
-	mTree.printTree();
+	//mTree.printTree();
 	std::string a = "The quick brown fox jumps over the yellow dog.";
 	std::string b = mTree.engToMorse(a);
 	std::string c = mTree.morseToEngMult(b);
 	std::cout << a << "\n" << b << "\n" << c << std::endl;
+	
+	std::vector<short int> d = mTree.createTimings("SOS", false);
+	
+	WAV mWav;
+	
+	mWav.composeMessage("completeSOS.wav", d);
 	return 0;
 }

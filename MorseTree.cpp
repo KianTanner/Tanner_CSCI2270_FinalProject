@@ -65,6 +65,36 @@ void MorseTree::addNode(char inEngChar, std::string inMorse) {
 	return;
 }
 
+std::vector<short int> MorseTree::createTimings(std::string input, bool inMorse) {
+	std::vector<short int> outVec;
+	if (!inMorse)
+		input = engToMorse(input);
+	for (int i = 0; i < input.length(); i++) {
+		if (input[i] == '.') {
+			outVec.push_back(1);	//One dot period of sound
+			if (input[i+1] == '/' || input[i+1] == ' ' || i == input.length()-1) {
+			} else {
+				outVec.push_back(-1);	//One dot period of silence	
+			}
+		} else if (input[i] == '-') {
+			outVec.push_back(3);	//Three dot periods of sound
+			if (input[i+1] == '/' || input[i+1] == ' ' || i == input.length()-1) {
+			} else {
+				outVec.push_back(-1);	//One dot period of silence	
+			}
+		} else if (input[i] == '/') {
+			outVec.push_back(-3);
+		} else if (input[i] == ' ') {
+			outVec.push_back(-7);
+		}
+	}
+	for (int i = 0; i < outVec.size(); i++) {
+		std::cout << outVec[i] << " ";
+	}
+	std::cout << std::endl;
+	return outVec;
+}
+
 std::string MorseTree::engToMorse(std::string inString) {
 	std::string outString = "", indivChar;
 	for (int i = 0; i < inString.length(); i++) {

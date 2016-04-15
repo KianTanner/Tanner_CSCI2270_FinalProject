@@ -2,6 +2,7 @@
 #define MORSETREE_H
 
 #include <string>
+#include <vector>
 
 struct MorseNode {
 	char engChar;
@@ -23,6 +24,7 @@ class MorseTree {
 		MorseTree();
 		~MorseTree();
 		void addNode(char inEngChar, std::string inMorse);
+		std::vector<short int> createTimings(std::string input, bool inMorse = true);
 		std::string engToMorse(std::string inString);
 		std::string morseToEngMult(std::string inMorse);
 		char morseToEng(std::string inMorse);
