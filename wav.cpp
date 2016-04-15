@@ -1,8 +1,13 @@
 #include "wav.h"
-
+#include "global.h"
 #include <iostream>
 #include <cstring>
 #include <cmath>
+
+/*Thanks to Stanford University for the webpage http://ccrma.stanford.edu/courses/422/projects/WaveFormat/ 
+ * which had very useful information on how .wav files are formated.
+ * In addition the Wayback Machine was neccessary to access the above page
+ */
 
 const double pi = 3.14159265358979323846264338327950288419716939937510582;
 
@@ -21,7 +26,7 @@ WAV::~WAV() {
 }
 
 void WAV::writeLittleEndian(unsigned int word, int numBytes, FILE *wavFile) {
-	unsigned buf;
+	unsigned int buf;
 	while (numBytes > 0) {
 		buf = word & 0xff;
 		fwrite(&buf, 1, 1, wavFile);
@@ -88,6 +93,3 @@ void WAV::composeMessage(std::string fName, std::vector<short int> timings) {
 	writeFile(fName, numSamples, buffer);
 	return;
 }
-	
-	
-

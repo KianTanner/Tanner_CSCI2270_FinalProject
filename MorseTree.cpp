@@ -1,15 +1,7 @@
 #include "MorseTree.h"
+#include "global.h"
 #include <iostream>
 #include <cctype>
-
-std::string orderedMorse[36] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", //A - J
-					/*K - T*/	"-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-",
-					/*U - Z*/	"..-", "...-", ".--", "-..-", "-.--", "--..", 
-					/*0 - 9*/	"-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----."};
-char nonAlphaNumChar[13] = {'\?', '\"', '+', '.', '@', '\'', '-', 
-							'=', '/', ';', '!', ',', ':'};
-std::string nonAlphaNumMorse[13] = {"..--..", ".-..-.", ".-.-.", ".-.-.-", ".--.-.", ".----.", "-....-", 
-									"-...-", "-..-.", "-.-.-.", "-.-.--", "--..--", "---..."};
 
 MorseTree::MorseTree() {
 	MorseNode *r;
@@ -88,10 +80,6 @@ std::vector<short int> MorseTree::createTimings(std::string input, bool inMorse)
 			outVec.push_back(-7);
 		}
 	}
-	for (int i = 0; i < outVec.size(); i++) {
-		std::cout << outVec[i] << " ";
-	}
-	std::cout << std::endl;
 	return outVec;
 }
 
@@ -112,10 +100,10 @@ std::string MorseTree::engToMorse(char inChar) {
 	std::string outString;
 	if (isalpha(inChar)) {
 		inChar = toupper(inChar);
-		index = int (inChar) - int ('A');
+		index = (int)(inChar) - (int)('A');
 		outString = orderedMorse[index];
 	} else if (isdigit(inChar)) {
-		index = int (inChar) - int ('0') + 26;
+		index = (int)(inChar) - (int)('0') + 26;
 		outString = orderedMorse[index];
 	} else if (inChar == ' ') {
 		outString = " ";
@@ -162,7 +150,7 @@ char MorseTree::morseToEng(std::string inMorse) {
 		else if (inMorse[i] == '-')
 			temp = temp->right;
 		else
-			return '&';
+			return '\0'; //was '&'
 	}
 	return temp->engChar;
 }	
@@ -180,6 +168,3 @@ void MorseTree::printTree(MorseNode *node) {
 		std::cout << node->engChar << " is " << node->morse << " in morse code.\n";
 	MorseTree::printTree(node->right);
 }
-	
-	
-	
