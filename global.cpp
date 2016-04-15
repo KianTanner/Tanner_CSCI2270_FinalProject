@@ -90,7 +90,7 @@ void displayDict() {
 		}
 		std::cout << "\t";
 	}
-	std::cout << "\n\nCommon, Nonstandard Prosigns:";
+	std::cout << "\n\nCommon, Non-Standard Prosigns:";
 	for (int i = 0; i < 13; i++) {
 		if ((i+36)%6 == 0)
 			std::cout << "\n";
