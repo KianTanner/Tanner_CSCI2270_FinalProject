@@ -80,7 +80,33 @@ std::vector<short int> MorseTree::createTimings(std::string input, bool inMorse)
 			outVec.push_back(-7);
 		}
 	}
+	/*
+	std::cout << "==\n";
+	for (int i = 0; i < outVec.size(); i++) {
+		std::cout << outVec[i];
+	}
+	std::cout << "\n==" << std::endl;
+	*/
 	return outVec;
+}
+
+std::string MorseTree::inverseTimings(std::vector <short int> inTiming) {
+	std::string outString = "";
+	for (int i = 0; i < inTiming.size(); i++) {
+		if (inTiming[i] == 1)
+			outString += '.';
+		else if (inTiming[i] == 3)
+			outString += '-';
+		else if (inTiming[i] == -3)
+			outString += '/';
+		else if (inTiming[i] == -5)
+			outString += '/';
+		else if (inTiming[i] == -7)
+			outString += ' ';
+		else if (inTiming[i] == -13)
+			outString += ' ';
+	}
+	return outString;
 }
 
 std::string MorseTree::engToMorse(std::string inString) {

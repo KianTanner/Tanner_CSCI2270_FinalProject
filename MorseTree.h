@@ -25,15 +25,16 @@ class MorseTree {
 		~MorseTree();
 		void addNode(char inEngChar, std::string inMorse);
 		std::vector<short int> createTimings(std::string input, bool inMorse = true);
+		std::string inverseTimings(std::vector <short int> inTiming);
 		std::string engToMorse(std::string inString);
 		std::string morseToEngMult(std::string inMorse);
-		char morseToEng(std::string inMorse);
 		void printTree();
 	
 	protected:
 	private:
 		MorseNode *root;
 		std::string engToMorse(char inChar);
+		char morseToEng(std::string inMorse);
 		void printTree(MorseNode *node);
 };
 

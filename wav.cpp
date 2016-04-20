@@ -9,7 +9,7 @@
  * In addition the Wayback Machine was neccessary to access the above page
  */
 
-const double pi = 3.14159265358979323846264338327950288419716939937510582;
+const double PI = 3.14159265358979323846264338327950288419716939937510582;
 
 WAV::WAV() {
 	sampleRate = 44100;
@@ -17,9 +17,10 @@ WAV::WAV() {
 	bytesPerSample = 2;
 	byteRate = sampleRate * numChannels * bytesPerSample;
 	dotPeriod = 5292;
+	dotPeriod = 3;
 	amplitude = 32000;
 	freq = 440;
-	freqRadsPerSample = freq*2*pi/sampleRate;
+	freqRadsPerSample = freq*2*PI/sampleRate;
 	bytesWriten = 0;
 }
 
@@ -65,28 +66,78 @@ void WAV::writeFile(std::string fName, unsigned long int numSamples, short int *
 	fwrite("data", 1, 4, wavFile);
 	bytesWriten += 4;
 	writeLittleEndian(bytesPerSample * numSamples * numChannels, 4, wavFile);
-	std::cout << bytesWriten << std::endl;
-	for (unsigned long int i; i < numSamples; i++) {
+	//std::cout << bytesWriten << std::endl;
+	for (unsigned long int i = 0; i < numSamples; i++) {
 		writeLittleEndian((unsigned int)(data[i]), bytesPerSample, wavFile);
 	}
+	//std::cout << "Num samples: " << numSamples << std::endl;
 	fclose(wavFile);
 	return;
 }
 
-void WAV::readFile(std::string fName) {
+std::vector <short int> WAV::readFile(std::string fName) {
 	FILE * wavFile;
 	wavFile = fopen(fName.c_str(), "r");
 	if (!wavFile) {
 		std::cout << "File didn't open" << std::endl;
-		return;
 	}
 	fseek(wavFile, 0, SEEK_END);
 	unsigned long int numSamples = ftell(wavFile) - 44;
 	fseek(wavFile, 44, SEEK_SET);
 	unsigned long int numElements = numSamples / dotPeriod;
-	std::cout << numSamples << "  " << numElements << std::endl;
+	//std::cout << numSamples << "  " << numElements << std::endl;
+	float phase = 0;
+	short int * inBuffer;
+	short int * outBuffer;
+	inBuffer = new short int [numSamples];
+	outBuffer = new short int [numSamples];
+	
+	unsigned long int numRead = fread(inBuffer, 1, numSamples, wavFile);
+	for (unsigned long int i = 0; i < numSamples; i++) {
+		phase += freqRadsPerSample;
+		outBuffer[i] = round((inBuffer[i]/sin(phase)) / amplitude);
+	}
+	delete [] inBuffer;
+	std::vector <short int> times;
+	std::vector <short int> outTimes;
+	std::vector <short int> trueOutTimes;
+	for (unsigned long int i = 0; i < (numSamples/2)/dotPeriod; i++) {
+		times.push_back(outBuffer[dotPeriod*i]);
+	}
+	delete [] outBuffer;
+	
+	int sum = 0;
+	for (unsigned long int i = 0; i < times.size(); i++) {
+		if (times[i] == 1) {
+			sum++;
+		}
+		if (times[i] == 0) {
+			outTimes.push_back(sum);
+			sum = 0;
+			outTimes.push_back(0);
+		} else if (i == times.size() - 1) {
+			outTimes.push_back(sum);
+		}
+	}
+	
+	sum = 0;
+	for (unsigned long int i = 0; i < outTimes.size(); i++) {
+		if (outTimes[i] == 0) {
+			sum--;
+		}
+		if (outTimes[i] != 0) {
+			if (sum < 0) {
+				trueOutTimes.push_back(sum);
+			}
+			sum = 0;
+			trueOutTimes.push_back(outTimes[i]);
+		} else if (i == outTimes.size() - 1) {
+			trueOutTimes.push_back(sum);
+		}
+	}
+	
 	fclose(wavFile);
-	return;
+	return trueOutTimes;
 }
 	
 

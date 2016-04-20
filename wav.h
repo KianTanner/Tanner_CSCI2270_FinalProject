@@ -10,7 +10,7 @@ class WAV {
 		WAV();
 		~WAV();
 		void writeFile(std::string fName, unsigned long int numSamples, short int * data);
-		void readFile(std::string fName);
+		std::vector <short int> readFile(std::string fName);
 		void composeMessage(std::string fName, std::vector<short int> timings);
 	protected:
 	private:

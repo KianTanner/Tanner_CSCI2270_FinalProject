@@ -1,24 +1,39 @@
 #include "MorseTree.h"
 #include "wav.h"
 #include "global.h"
+
 #include <iostream>
 #include <string>
 #include <cstring>
 #include <vector>
 
-const short int version = 1, majorRev = 1, minorRev = 0;
-
+const short int VERSION = 0, MAJOR_REVISION = 2, MINOR_REVISION = 0;
 
 // Maybe add error handling so that if user inputs filename can add extension?
-				
 
 int main(int argc, char * argv[]) {
+	
 	short int inputLang = 0; //1:e2m, 2:m2e, 3:display help, 4:display dictionary
 	short int inputType = 0; //1:text file, 2:keyboard, 3:audio file
 	short int outputType[3] = {-1, -1, -1}; //text, onscreen, audio file
 	std::string inFileName, textOutFileName, audioOutFileName;
+	
+	MorseTree mTree;
+	for (int i = 0; i < 58; i++) {
+		mTree.addNode(cArray[i], sArray[i]);
+	}
+	
+	WAV testWAV;
+	
+	std::vector<short int> testTiming = mTree.createTimings(".-/. ..");
+	testWAV.composeMessage("ab.wav", testTiming);
+	std::vector<short int> returnTiming = testWAV.readFile("ab.wav");
+	std::string inMorse = mTree.inverseTimings(returnTiming);
+	std::cout << inMorse << std::endl;
+	
+	//Menu
 	while (inputLang != 1 && inputLang != 2) {
-		std::cout << "======MORSE TRANSLATOR v" << version << "." << majorRev << "." << minorRev << "======\n";
+		std::cout << "======MORSE TRANSLATOR v" << VERSION << "." << MAJOR_REVISION << "." << MINOR_REVISION << "======\n";
 		std::cout << "Translate from:\n\t1. English to morse code\n\t2. Morse code to english\n\t3. Display help\n\t4. Display english to morse code dictionary\n\t5. Quit\n";
 		std::cin >> inputLang;
 		if (inputLang == 3) {
@@ -104,7 +119,6 @@ int main(int argc, char * argv[]) {
 		std::cout << "Enter the morse code string you wish to translate into english (must use '/' to separate characters and ' ' to separate words):" << std::endl;
 		std::getline(std::cin, inFileName);
 	}
-	
 	if (outputType[0] == 1) {
 		FILE * testFile;
 		do {
@@ -124,13 +138,6 @@ int main(int argc, char * argv[]) {
 			testFile = fopen(audioOutFileName.c_str(), "w");
 		} while (testFile == NULL);
 		fclose(testFile);
-	}
-	
-	
-	
-	MorseTree mTree;
-	for (int i = 0; i < 58; i++) {
-		mTree.addNode(cArray[i], sArray[i]);
 	}
 	
 	WAV mWav;
@@ -158,7 +165,8 @@ int main(int argc, char * argv[]) {
 		} else if (inputType == 2) { //Input via keyboard
 			morseText = inFileName;
 		} else { //Input via audio file
-			//Read audio file
+			std::vector<short int> retTiming = mWav.readFile(inFileName);
+			morseText = mTree.inverseTimings(retTiming);
 		}
 		engText = mTree.morseToEngMult(morseText);
 		if (outputType[0] == 1) { //Output to text file
