@@ -3,6 +3,7 @@
 
 #include <string>
 
+
 //Ordered arrays for searching backwards
 extern std::string orderedMorse[];
 extern char nonAlphaNumChar[];

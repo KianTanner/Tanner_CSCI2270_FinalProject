@@ -6,288 +6,167 @@
 #include <cstring>
 #include <vector>
 
+const short int version = 1, majorRev = 1, minorRev = 0;
+
+
 // Maybe add error handling so that if user inputs filename can add extension?
 				
 
 int main(int argc, char * argv[]) {
-	
-	bool tIn, aIn, mIn, menu, m2e, e2m, tOut, aOut, dOut, h, dict;
-	tIn = aIn = mIn = menu = m2e = e2m = tOut = aOut = dOut = h = dict = false;
-	std::string inFile = "", tOutFile, aOutFile, argum, exten;
-	
-	//Parse arguments
-	for (int i = 1; i < argc; i++) {
-		argum = argv[i];
-		if (argum == "-h") {	//Display help (overrides others)
-			h = true;
-		} else if (argum == "-help") {
-			h = true;
-		} else if (argum == "-ti") {	//Input via text file (conflicts with -m2e (for now), -ai, -mi, -menu)
-			tIn = true;
-			inFile = argv[i+1];	//Next argument must be filename
-			i++;
-		} else if (argum == "-ai") {	//Input via audio file (conflicts with -e2m (for now), -ti, -mi, -menu)
-			aIn = true;
-			inFile = argv[i+1];
-			i++;
-		} else if (argum == "-mi") {	//Input via argument (conflicts with -ti, -ai, -menu), (if -m2e, must be in the form ---/.../--- .../---/... ---/.../--- ('/' to separate letters, ' ' to separate words))
-			mIn = true;
-			inFile = argv[i+1];
-			i++;
-		} else if (argum == "-menu") {	//Input via menu (conflicts with -ti, -ai, -mi, -m2e, -e2m, -to, -ao, -do, -dict) default if no other input method selected or if filenames don't open
-			menu = true;
-		} else if (argum == "-m2e") {	//Morse to english (conflicts with -ti (for now), -menu, -ao), (default if neither -m2e or -e2m is menu)
-			m2e = true;
-		} else if (argum == "-e2m") {	//English to morse (conflicts with -ai (for now), -menu)
-			e2m = true;
-		} else if (argum == "-to") {	//Output to text file (conflicts with -menu)
-			tOut = true;
-			tOutFile = argv[i+1];	//Next argument must be filename
-			i++;
-		} else if (argum == "-ao") {	//Output to audio file (.wav) (conflicts with -menu, -m2e (for now))
-			aOut = true;
-			aOutFile = argv[i+1];
-			i++;
-		} else if (argum == "-do") {	//Output to display (conflicts with -menu)
-			dOut = true;
-		} else if (argum == "-dict") {	//Display english to morse dictionary
-			dict = true;
-		} else {
-			std::cout << argum << " is not a valid argument." << std::endl;
-			h = true;
+	short int inputLang = 0; //1:e2m, 2:m2e, 3:display help, 4:display dictionary
+	short int inputType = 0; //1:text file, 2:keyboard, 3:audio file
+	short int outputType[3] = {-1, -1, -1}; //text, onscreen, audio file
+	std::string inFileName, textOutFileName, audioOutFileName;
+	while (inputLang != 1 && inputLang != 2) {
+		std::cout << "======MORSE TRANSLATOR v" << version << "." << majorRev << "." << minorRev << "======\n";
+		std::cout << "Translate from:\n\t1. English to morse code\n\t2. Morse code to english\n\t3. Display help\n\t4. Display english to morse code dictionary\n\t5. Quit\n";
+		std::cin >> inputLang;
+		if (inputLang == 3) {
+			displayHelp();
+			inputLang = 0;
+		} else if (inputLang == 4) {
+			displayDict();
+			inputLang = 0;
+		} else if (inputLang == 5) {
+			return 0;
+		}
+	}
+	if (inputLang == 1) { //English to morse code
+		while (inputType != 1 && inputType != 2) {
+			std::cout << "Input from:\n\t1. Text file\n\t2. Keyboard\n\t3. Quit\n";
+			std::cin >> inputType;
+			if (inputType == 3)
+				return 0;
+		}
+		while (outputType[0] != 1 && outputType[0] != 2) {
+			std::cout << "Output to text file? (may select multiple output types)\n\t1. Yes\n\t2. No\n\t3. Quit\n";
+			std::cin >> outputType[0];
+			if (outputType[0] == 3)
+				 return 0;
+		}
+		while (outputType[1] != 1 && outputType[1] != 2) {
+			std::cout << "Output to screen? (may select multiple output types)\n\t1. Yes\n\t2. No\n\t3. Quit\n";
+			std::cin >> outputType[1];
+			if (outputType[1] == 3)
+				 return 0;
+		}
+		while (outputType[2] != 1 && outputType[2] != 2) {
+			std::cout << "Output to audio file? (may select multiple output types)\n\t1. Yes\n\t2. No\n\t3. Quit\n";
+			std::cin >> outputType[2];
+			if (outputType[2] == 3)
+				 return 0;
+		}
+		for (int i = 0; i < 3; i++) { //Transform from 1 and 2 to 0 and 1
+			outputType[i] -= 2;
+			outputType[i] *= -1;
+		}
+	} else { //Morse code to english
+		while (inputType != 1 && inputType != 2 && inputType != 3) {
+			std::cout << "Input from:\n\t1. Text file (must be in correct format)\n\t2. Keyboard (must be in correct format)\n\t3. Audio file (must be .wav with correct timing)\n\t4. Quit\n";
+			std::cin >> inputType;
+			if (inputType == 4)
+				return 0;
+		}
+		while (outputType[0] != 1 && outputType[0] != 2) {
+			std::cout << "Output to text file? (may select multiple output types)\n\t1. Yes\n\t2. No\n\t3. Quit\n";
+			std::cin >> outputType[0];
+			if (outputType[0] == 3)
+				 return 0;
+		}
+		while (outputType[1] != 1 && outputType[1] != 2) {
+			std::cout << "Output to screen? (may select multiple output types)\n\t1. Yes\n\t2. No\n\t3. Quit\n";
+			std::cin >> outputType[1];
+			if (outputType[1] == 3)
+				 return 0;
+		}
+		outputType[2] = 0;
+		for (int i = 0; i < 2; i++) { //Transform from 1 and 2 to 0 and 1
+			outputType[i] -= 2;
+			outputType[i] *= -1;
 		}
 	}
 	
-	//Check for conflicts in arguments
-	if (h)
-		menu = true;
-	if (dict)
-		menu = true;
-	if (tIn && (aIn || mIn || menu || m2e))
-		menu = true;
-	if (aIn && (tIn || mIn || menu || e2m))
-		menu = true;
-	if (mIn && (tIn || aIn || menu))
-		menu = true;
-	if (!tIn && !aIn && !mIn)
-		menu = true;
-	if (!menu && !mIn) {
-		exten = "";
-		for (int i = 4; i >= 0; i--) {
-			exten += inFile[inFile.length() - i];
-		}
-		if (tIn) {
-			if (exten != ".txt")
-				menu = true;
-		}
-		if (aIn) {
-			if (exten != ".wav")
-				menu = true;
-		}
+	if (inputType == 1 || inputType == 3) { //Input via file
 		FILE * testFile;
-		testFile = fopen(inFile.c_str(), "r");
-		if (testFile == NULL)
-			menu = true;
-		fclose (testFile);
-	}
-	if (!m2e && !e2m)
-		menu = true;
-	if (m2e && (e2m || aOut))
-		menu = true;
-	if (tOut && !menu) {
-		exten = "";
-		for (int i = 4; i >= 0; i--) {
-			exten += tOutFile[tOutFile.length() - i];
-		}
-		std::string exten_c = exten.c_str();
-		std::string tExten = ".txt";
-		std::string tExten_c = tExten.c_str();
-		if (exten_c.compare(tExten_c))
-			menu = true;
-	}
-	if (aOut && !menu) {
-		exten = "";
-		for (int i = 4; i >= 0; i--) {
-			exten += aOutFile[aOutFile.length() - i];
-		}
-		std::string exten_c = exten.c_str();
-		std::string tExten = ".wav";
-		std::string tExten_c = tExten.c_str();
-		if (exten_c.compare(tExten_c))
-			menu = true;
-	}
-	if (!menu && !tOut && !aOut)
-		dOut = true;
-	if (menu)
-		tIn = aIn = mIn = m2e = e2m = tOut = aOut = dOut = false;
-	
-	/*
-	std::cout << "Arguments:\n------------------------------------------\n";
-	std::cout << "Input:\nText:\tAudio:\tManual:\tMenu:\n" << tIn << "\t" << aIn << "\t" << mIn << "\t" << menu << "\n\n";
-	std::cout << "Output:\nText:\tAudio:\tDisplay:\n" << tOut << "\t" << aOut << "\t" << dOut << "\n\n";
-	std::cout << "Others:\nM2E:\tE2M:\tHelp:\tDict:\n" << m2e << "\t" << e2m << "\t" << h << "\t" << dict << "\n\n";
-	*/
-	
-	if (h)
-		displayHelp();
-	
-	if (dict)
-		displayDict();
-	
-	int inputInt;
-	if (menu) {
-		inFile = "";
-		std::cout << "=====MORSE TRANSLATOR v1.0=====\n";
-		inputInt = 0;
-		while (!(inputInt == 1 || inputInt == 2)) {
-			std::cout << "Translate from: \n\t1. English to morse code\n\t2. Morse code to english\n";
-			std::cin >> inputInt;
+		do {
 			std::cin.ignore(1000, '\n');
-			std::cout << std::endl;
-		}
-		if (inputInt == 1)
-			e2m = true;
-		else
-			m2e = true;
-		inputInt = 0;
-		while (!(inputInt == 1 || inputInt == 2 || inputInt == 3)) {
-			if (e2m) {
-				std::cout << "Input from: \n\t1. Text file (.txt only)\n\t2. Enter on keyboard\n";
-				std::cin >> inputInt;
-				std::cin.ignore(1000, '\n');
-				std::cout << std::endl;
-				if (inputInt == 3)
-					inputInt = 4;
-			} else {
-				std::cout << "Input from: \n\t1. Text file (.txt only)\nt2. Audio file (.wav only)\n\t3. Enter on keyboard\n";
-				std::cin >> inputInt;
-				std::cin.ignore(1000, '\n');
-				std::cout << std::endl;
-			}
-		}
-		if (e2m) {
-			if (inputInt == 1)
-				tIn = true;
-			else
-				mIn = true;
-		} else {
-			if (inputInt == 1)
-				tIn = true;
-			else if (inputInt == 2)
-				aIn =true;
-			else
-				mIn = true;
-		}
-		inputInt = 0;
-		if (!mIn) {
-			FILE * tFile;
-			do {
-				std::cout << "Enter the name of the input file (including file extension): ";
-				std::getline(std::cin, inFile);
-				std::cin.ignore(1000, '\n');
-				tFile = fopen(inFile.c_str(), "r");
-			} while (tFile == NULL);
-			fclose(tFile);
-		} else {
-			if (m2e) {
-				std::cout << "Enter a morse code sequence (\'/\' between letters, \' \' between words): ";
-				std::getline(std::cin, inFile);
-				std::cin.ignore(1000, '\n');
-			} else {
-				std::cout << "Enter a message in english: ";
-				std::getline(std::cin, inFile);
-				std::cin.ignore(1000, '\n');
-			}
-		}
-		while (!(inputInt == 1 || inputInt == 2)) {
-			std::cout << "Output as a text file? (may select multiple outputs)\n\t1. Yes\n\t2. No\n";
-			std::cin >> inputInt;
-			std::cin.ignore(1000, '\n');
-			std::cout << std::endl;
-		}
-		if (inputInt == 1) {
-			FILE * tFile;
-			tOutFile = "";
-			tOut = true;
-			do {
-				std::cout << "Enter the name of the text file to be output (including file extension): ";
-				std::getline(std::cin, tOutFile);
-				std::cin.ignore(1000, '\n');
-				tFile = fopen(tOutFile.c_str(), "w");
-			} while (tFile == NULL);
-			fclose(tFile);
-		}
-		inputInt = 0;
-		while (!(inputInt == 1 || inputInt == 2)) {
-			std::cout << "Output as an audio file? (.wav only) (may select multiple outputs)\n\t1. Yes\n\t2. No\n";
-			std::cin >> inputInt;
-			std::cin.ignore(1000, '\n');
-			std::cout << std::endl;
-		}
-		if (inputInt == 1) {
-			FILE * tFile;
-			aOutFile = "";
-			aOut = true;
-			do {
-				std::cout << "Enter the name of the audio file to be output (including file extension): ";
-				std::getline(std::cin, aOutFile);
-				std::cin.ignore(1000, '\n');
-				tFile = fopen(aOutFile.c_str(), "w");
-			} while (tFile == NULL);
-			fclose(tFile);
-		}
-		inputInt = 0;
-		while (!(inputInt == 1 || inputInt == 2)) {
-			std::cout << "Output onto the display?\n\t1. Yes\n\t2. No\n";
-			std::cin >> inputInt;
-			std::cin.ignore(1000, '\n');
-			std::cout << std::endl;
-		}
-		if (inputInt == 1) {
-			dOut = true;
-		}
+			std::cout << "Enter the name of the input file (including file extension):" << std::endl;
+			std::getline(std::cin, inFileName);
+			testFile = fopen(inFileName.c_str(), "r");
+		} while (testFile == NULL);
+		fclose(testFile);
+	} else if (inputLang == 1) { //Onscreen input in english
+		std::cin.ignore(1000, '\n');
+		std::cout << "Enter the english string you wish to translate into morse code:" << std::endl;
+		std::getline(std::cin, inFileName);
+	} else { //Onscreen input in morse code
+		std::cin.ignore(1000, '\n');
+		std::cout << "Enter the morse code string you wish to translate into english (must use '/' to separate characters and ' ' to separate words):" << std::endl;
+		std::getline(std::cin, inFileName);
 	}
+	
+	if (outputType[0] == 1) {
+		FILE * testFile;
+		do {
+			std::cin.ignore(1000, '\n');
+			std::cout << "Enter the name of the text file to be output (including .txt file extension):" << std::endl;
+			std::getline(std::cin, textOutFileName);
+			testFile = fopen(textOutFileName.c_str(), "w");
+		} while (testFile == NULL);
+		fclose(testFile);
+	}
+	if (outputType[2] == 1) {
+		FILE * testFile;
+		do {
+			std::cin.ignore(1000, '\n');
+			std::cout << "Enter the name of the audio file to be output (including .wav file extension):" << std::endl;
+			std::getline(std::cin, audioOutFileName);
+			testFile = fopen(audioOutFileName.c_str(), "w");
+		} while (testFile == NULL);
+		fclose(testFile);
+	}
+	
+	
 	
 	MorseTree mTree;
 	for (int i = 0; i < 58; i++) {
 		mTree.addNode(cArray[i], sArray[i]);
 	}
-	WAV mWav;
 	
-	std::string morseText, engText;
-	if (m2e) {
-		if (tIn) {
-			//Get morseText
-		} else if (aIn) {
-			//Get morse audio
-		} else if (mIn) {
-			morseText = inFile;
-		}
-		engText = mTree.morseToEngMult(morseText);
-		if (tOut) {
-			//Write to text file
-		}
-		if (dOut)
-			std::cout << "The message translated into english is: \n" << engText << std::endl;
-	} else if (e2m) {
-		if (tIn) {
-			//Get engText
-		} else if (mIn) {
-			engText = inFile;
+	WAV mWav;
+
+	std::string engText, morseText;
+	if (inputLang == 1) { //English to morse code
+		if (inputType == 1) { //Input via text file
+			//Read english from text file
+		} else { //Input via keyboard
+			engText = inFileName;
 		}
 		morseText = mTree.engToMorse(engText);
-		if (tOut) {
-			//Write shit to text file
+		if (outputType[0] == 1) { //Output to text file
+			//Write to text file
 		}
-		if (aOut) {
+		if (outputType[1] == 1) //Output to screen
+			std::cout << engText << " translated into morse code is:\n" << morseText << std::endl;
+		if (outputType[2] == 1) { //Output to audio file
 			std::vector<short int> timing = mTree.createTimings(morseText);
-			mWav.composeMessage(aOutFile, timing);
+			mWav.composeMessage(audioOutFileName, timing);
 		}
-		if (dOut)
-			std::cout << "The message translated into morse code is: \n" << morseText << std::endl;
+	} else { //Morse code to english
+		if (inputType == 1) { //Input via text file
+			//Read morse code from text file
+		} else if (inputType == 2) { //Input via keyboard
+			morseText = inFileName;
+		} else { //Input via audio file
+			//Read audio file
+		}
+		engText = mTree.morseToEngMult(morseText);
+		if (outputType[0] == 1) { //Output to text file
+			//Write to text file
+		}
+		if (outputType[1] == 1) //Output to screen
+			std::cout << morseText << " translated into english is:\n" << engText << std::endl;
 	}
-	
-	
-	
+
 	return 0;
 }

@@ -20,6 +20,7 @@ WAV::WAV() {
 	amplitude = 32000;
 	freq = 440;
 	freqRadsPerSample = freq*2*pi/sampleRate;
+	bytesWriten = 0;
 }
 
 WAV::~WAV() {
@@ -30,6 +31,7 @@ void WAV::writeLittleEndian(unsigned int word, int numBytes, FILE *wavFile) {
 	while (numBytes > 0) {
 		buf = word & 0xff;
 		fwrite(&buf, 1, 1, wavFile);
+		bytesWriten++;
 		numBytes--;
 		word >>= 8;
 	}
@@ -42,12 +44,15 @@ void WAV::writeFile(std::string fName, unsigned long int numSamples, short int *
 		std::cout << "File didn't open" << std::endl;
 		return;
 	}
-	fwrite("RIFF", 1, 4, wavFile);
-	writeLittleEndian(36 + bytesPerSample * numSamples * numChannels, 4, wavFile);
+	fwrite("RIFF", 1, 4, wavFile); //4 bytes
+	bytesWriten += 4;
+	writeLittleEndian(36 + bytesPerSample * numSamples * numChannels, 4, wavFile); //
 	fwrite("WAVE", 1, 4, wavFile);
+	bytesWriten += 4;
 	
 	//Write fmt subchunk
 	fwrite("fmt ", 1, 4, wavFile);
+	bytesWriten += 4;
 	writeLittleEndian(16, 4, wavFile);	//First subchunk size is 16
 	writeLittleEndian(1, 2, wavFile);	//PCM is format 1
 	writeLittleEndian(numChannels, 2, wavFile);
@@ -58,13 +63,32 @@ void WAV::writeFile(std::string fName, unsigned long int numSamples, short int *
 	
 	//Write data subchunk
 	fwrite("data", 1, 4, wavFile);
+	bytesWriten += 4;
 	writeLittleEndian(bytesPerSample * numSamples * numChannels, 4, wavFile);
+	std::cout << bytesWriten << std::endl;
 	for (unsigned long int i; i < numSamples; i++) {
 		writeLittleEndian((unsigned int)(data[i]), bytesPerSample, wavFile);
 	}
 	fclose(wavFile);
 	return;
 }
+
+void WAV::readFile(std::string fName) {
+	FILE * wavFile;
+	wavFile = fopen(fName.c_str(), "r");
+	if (!wavFile) {
+		std::cout << "File didn't open" << std::endl;
+		return;
+	}
+	fseek(wavFile, 0, SEEK_END);
+	unsigned long int numSamples = ftell(wavFile) - 44;
+	fseek(wavFile, 44, SEEK_SET);
+	unsigned long int numElements = numSamples / dotPeriod;
+	std::cout << numSamples << "  " << numElements << std::endl;
+	fclose(wavFile);
+	return;
+}
+	
 
 void WAV::composeMessage(std::string fName, std::vector<short int> timings) {
 	long int numElements = 0;
