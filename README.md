@@ -150,7 +150,7 @@ SOS
 * Please email any other suggestions to kian.tanner@colorado.edu
 
 ## Morse Code Standard
-This program uses standard morse code with some extended prosigns. A full list of availible characters that may be used can be viewed by running the program and selecting
+This program uses standard morse code with some extended prosigns. A full list of available characters that may be used can be viewed by running the program and selecting
 ```sh
 4. Display english to morse code dictionary
 ```
