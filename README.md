@@ -164,7 +164,7 @@ is represented as
 in morse code.
 
 ## Many Thanks To
-- Reddit user [AdamDe27](https://www.reddit.com/r/LearnUselessTalents/comments/2cuwur/morse_code_translator_tree_when_you_hear_a_move/) for the idea for this project
+- Reddit user [AdamDe27](https://www.reddit.com/r/LearnUselessTalents/comments/2cuwur/morse_code_translator_tree_when_you_hear_a_move/), whose thread on r/LearnUselessTalents inspired this program
 - [Stanford University](https://web.archive.org/web/20090827003349/http://ccrma.stanford.edu/courses/422/projects/WaveFormat), for much-needed information on the WAVE format
 - [Wayback Machine](https://archive.org/web/), which was required to access above webpage
 - [Cplusplus.com](cplusplus.com), for its reference pages on the C++ standard library
