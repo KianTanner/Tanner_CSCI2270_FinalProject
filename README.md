@@ -139,7 +139,7 @@ SOS
 
 ##### Open Issues/Bugs
 * User has to press enter twice after typing input file name or input text (only occurs when output to a file is selected)
-* Please report any issues or bugs on GitHub page, or email to kian.tanner@colorado.edu
+* Please report any issues or bugs on the GitHub page, or email to kian.tanner@colorado.edu
 
 ##### Future Enhancements 
 * [ ] Check input text file to see if any characters don't have morse code equivalents and remove them
