@@ -139,7 +139,7 @@ SOS
 
 ##### Open Issues/Bugs
 * User has to press enter twice after typing input file name or input text (only occurs when output to a file is selected)
-* Report any issues or bugs on GitHub page, or email to kian.tanner@colorado.edu
+* Please report any issues or bugs on the GitHub page, or email to kian.tanner@colorado.edu
 
 ##### Future Enhancements 
 * [ ] Check input text file to see if any characters don't have morse code equivalents and remove them
@@ -150,7 +150,7 @@ SOS
 * Please email any other suggestions to kian.tanner@colorado.edu
 
 ## Morse Code Standard
-This program uses standard morse code with some extended prosigns. A full list of availible characters that may be used can be viewed by running the program and selecting
+This program uses standard morse code with some extended prosigns. A full list of available characters that may be used can be viewed by running the program and selecting
 ```sh
 4. Display english to morse code dictionary
 ```
@@ -164,7 +164,7 @@ is represented as
 in morse code.
 
 ## Many Thanks To
-- Reddit user [AdamDe27](https://www.reddit.com/r/LearnUselessTalents/comments/2cuwur/morse_code_translator_tree_when_you_hear_a_move/) for the idea for this project
+- Reddit user [AdamDe27](https://www.reddit.com/r/LearnUselessTalents/comments/2cuwur/morse_code_translator_tree_when_you_hear_a_move/), whose thread on r/LearnUselessTalents inspired this program
 - [Stanford University](https://web.archive.org/web/20090827003349/http://ccrma.stanford.edu/courses/422/projects/WaveFormat), for much-needed information on the WAVE format
 - [Wayback Machine](https://archive.org/web/), which was required to access above webpage
 - [Cplusplus.com](cplusplus.com), for its reference pages on the C++ standard library
