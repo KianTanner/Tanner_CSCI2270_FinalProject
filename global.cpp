@@ -1,4 +1,5 @@
 #include "global.h"
+
 #include <iostream>
 
 //Formerly in MorseTree.cpp
@@ -26,13 +27,13 @@ std::string sArray[58] = {".", "-", "..", ".-", "-.", "--", "...", "..-", ".-.",
 							"-....-", "-...-", "-..-.", "-.-.-", "-.-.-.", "-.-.--", "--..-", "--..--", "---..."};
 
 void displayHelp() {
-	std::cout << "=====HELP TEXT=====\n";
-	std::cout << "=====END OF HELP TEXT=====" << std::endl;
+	std::cout << "======HELP TEXT=====\n";
+	std::cout << "======END OF HELP TEXT======" << std::endl;
 	return;
 }
 
 void displayDict() {
-	std::cout << "=====DICTIONARY=====\nInternational Standard:";
+	std::cout << "======DICTIONARY======\nInternational Standard:";
 	for (int i = 0; i < 26; i++) {
 		if (i%6 == 0)
 			std::cout << "\n";
@@ -61,6 +62,6 @@ void displayDict() {
 		}
 		std::cout << "\t";		
 	}
-	std::cout << "\n=====END OF DICTIONARY=====" << std::endl;
+	std::cout << "\n======END OF DICTIONARY======" << std::endl;
 	return;
 }

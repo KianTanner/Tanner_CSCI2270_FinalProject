@@ -4,11 +4,12 @@
 #include <string>
 #include <vector>
 
+//Struct for node
 struct MorseNode {
-	char engChar;
-	std::string morse;
+	char engChar;	//English character represented by morse (if null character '\0', node is empty)
+	std::string morse;	//Morse string composed solely with '.' or '-'
 	
-	MorseNode *parent;
+	MorseNode *parent;	//Duh
 	MorseNode *left;
 	MorseNode *right;
 	
@@ -19,23 +20,24 @@ struct MorseNode {
 	}
 };
 
+//Tree class
 class MorseTree {
 	public:
-		MorseTree();
-		~MorseTree();
-		void addNode(char inEngChar, std::string inMorse);
-		std::vector<short int> createTimings(std::string input, bool inMorse = true);
-		std::string inverseTimings(std::vector <short int> inTiming);
-		std::string engToMorse(std::string inString);
-		std::string morseToEngMult(std::string inMorse);
-		void printTree();
-	
+		MorseTree();	//Constructor
+		~MorseTree();	//Destructor
+		void buildTree();	//Build tree
+		void addNode(char inEngChar, std::string inMorse);	//Add node
+		std::vector<short int> createTimings(std::string input, bool inMorse = true);	//Create timings to give to WAV class
+		std::string inverseTimings(std::vector <short int> inTiming);	//Convert timings returned from WAV to standard morse code
+		std::string engToMorse(std::string inString);	//Translate english string to morse code
+		std::string morseToEngMult(std::string inMorse);	//Translate morse phrase to english
+		void printTree();	//Print entire tree
+		std::string engToMorse(char inChar);	//Translate english character to morse code
+		char morseToEng(std::string inMorse);	//Translate single morse sequence (letter, number, etc) to english character
 	protected:
 	private:
-		MorseNode *root;
-		std::string engToMorse(char inChar);
-		char morseToEng(std::string inMorse);
-		void printTree(MorseNode *node);
+		MorseNode *root;	//Root of tree
+		void printTree(MorseNode * node);	//Print tree given root
 };
 
 #endif

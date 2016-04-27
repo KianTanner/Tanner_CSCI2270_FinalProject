@@ -6,30 +6,21 @@
 #include <string>
 #include <cstring>
 #include <vector>
+#include <fstream>
 
-const short int VERSION = 0, MAJOR_REVISION = 2, MINOR_REVISION = 0;
+const short int VERSION = 1, MAJOR_REVISION = 4, MINOR_REVISION = 1;
 
-// Maybe add error handling so that if user inputs filename can add extension?
+//Delete tag is //DELETE ME
+//FUTURE EDIT: Allow user to not enter file extension
 
 int main(int argc, char * argv[]) {
-	
 	short int inputLang = 0; //1:e2m, 2:m2e, 3:display help, 4:display dictionary
 	short int inputType = 0; //1:text file, 2:keyboard, 3:audio file
 	short int outputType[3] = {-1, -1, -1}; //text, onscreen, audio file
 	std::string inFileName, textOutFileName, audioOutFileName;
 	
 	MorseTree mTree;
-	for (int i = 0; i < 58; i++) {
-		mTree.addNode(cArray[i], sArray[i]);
-	}
-	
-	WAV testWAV;
-	
-	std::vector<short int> testTiming = mTree.createTimings(".-/. ..");
-	testWAV.composeMessage("ab.wav", testTiming);
-	std::vector<short int> returnTiming = testWAV.readFile("ab.wav");
-	std::string inMorse = mTree.inverseTimings(returnTiming);
-	std::cout << inMorse << std::endl;
+	mTree.buildTree();
 	
 	//Menu
 	while (inputLang != 1 && inputLang != 2) {
@@ -112,7 +103,7 @@ int main(int argc, char * argv[]) {
 		fclose(testFile);
 	} else if (inputLang == 1) { //Onscreen input in english
 		std::cin.ignore(1000, '\n');
-		std::cout << "Enter the english string you wish to translate into morse code:" << std::endl;
+		std::cout << "Enter the english string you wish to translate into morse code:" << std::endl;	//FUTURE EDIT: need to press enter twice if outputing to a file
 		std::getline(std::cin, inFileName);
 	} else { //Onscreen input in morse code
 		std::cin.ignore(1000, '\n');
@@ -142,16 +133,32 @@ int main(int argc, char * argv[]) {
 	
 	WAV mWav;
 
-	std::string engText, morseText;
+	std::string engText = "", morseText = "";
 	if (inputLang == 1) { //English to morse code
 		if (inputType == 1) { //Input via text file
 			//Read english from text file
+			//FUTURE EDIT: Check to see if invalid chars
+			std::ifstream myFile;
+			std::string line;
+			myFile.open(inFileName.c_str());
+			if (myFile.is_open()) {
+				while (getline(myFile, line)) {
+					line += " ";
+					engText += line;
+				}
+				myFile.close();
+			}
 		} else { //Input via keyboard
 			engText = inFileName;
 		}
 		morseText = mTree.engToMorse(engText);
 		if (outputType[0] == 1) { //Output to text file
-			//Write to text file
+			std::ofstream myFile;
+			myFile.open(textOutFileName.c_str(), std::ios::trunc);
+			if (myFile.is_open()) {
+				myFile << morseText;
+				myFile.close();
+			}
 		}
 		if (outputType[1] == 1) //Output to screen
 			std::cout << engText << " translated into morse code is:\n" << morseText << std::endl;
@@ -161,7 +168,16 @@ int main(int argc, char * argv[]) {
 		}
 	} else { //Morse code to english
 		if (inputType == 1) { //Input via text file
-			//Read morse code from text file
+			std::ifstream myFile;
+			std::string line;
+			myFile.open(inFileName.c_str());
+			if (myFile.is_open()) {
+				while (getline(myFile, line)) {
+					line += " ";
+					morseText += line;
+				}
+				myFile.close();
+			}
 		} else if (inputType == 2) { //Input via keyboard
 			morseText = inFileName;
 		} else { //Input via audio file
@@ -170,7 +186,12 @@ int main(int argc, char * argv[]) {
 		}
 		engText = mTree.morseToEngMult(morseText);
 		if (outputType[0] == 1) { //Output to text file
-			//Write to text file
+			std::ofstream myFile;
+			myFile.open(textOutFileName.c_str(), std::ios::trunc);
+			if (myFile.is_open()) {
+				myFile << engText;
+				myFile.close();
+			}
 		}
 		if (outputType[1] == 1) //Output to screen
 			std::cout << morseText << " translated into english is:\n" << engText << std::endl;
