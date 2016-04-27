@@ -132,7 +132,7 @@ SOS
 
 ## Development
 ##### Group Members
-- [Kian Tanner](@KianTanner)
+- Kian Tanner
 
 ##### Contributors
 - N/A
