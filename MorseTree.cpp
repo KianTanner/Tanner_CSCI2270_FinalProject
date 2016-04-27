@@ -242,7 +242,7 @@ void MorseTree::printTree(MorseNode * node) {	//Print tree starting at node
 
 void MorseTree::displayDictionary() {
 	std::cout << "======DICTIONARY======\nInternational Standard:";
-	for (int i = 0; i < 26; i++) {
+	for (int i = 0; i < 26; i++) {	//Print A - Z
 		if (i%6 == 0)
 			std::cout << "\n";
 		std::cout << (char)((int)('A') + i) << " : " << orderedMorse[i];
@@ -251,7 +251,7 @@ void MorseTree::displayDictionary() {
 		}
 		std::cout << "\t";
 	}
-	for (int i = 26; i < 36; i++) {
+	for (int i = 26; i < 36; i++) {	//Print 0 - 9
 		if (i%6 == 0)
 			std::cout << "\n";
 		std::cout << i-26 << " : " << orderedMorse[i];
@@ -261,7 +261,7 @@ void MorseTree::displayDictionary() {
 		std::cout << "\t";
 	}
 	std::cout << "\n\nCommon, Non-Standard Prosigns:";
-	for (int i = 0; i < 13; i++) {
+	for (int i = 0; i < 13; i++) {	//Print prosigns
 		if ((i+36)%6 == 0)
 			std::cout << "\n";
 		std::cout << nonAlphaNumChar[i] << " : " << nonAlphaNumMorse[i];

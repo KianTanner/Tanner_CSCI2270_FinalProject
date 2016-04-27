@@ -33,11 +33,11 @@ class MorseTree {
 		std::string morseToEngMult(std::string inMorse);	//Translate morse phrase to english
 		void displayDictionary();
 		void printTree();	//Print entire tree
-		std::string engToMorse(char inChar);	//Translate english character to morse code
-		char morseToEng(std::string inMorse);	//Translate single morse sequence (letter, number, etc) to english character
 	protected:
 	private:
 		MorseNode *root;	//Root of tree
+		std::string engToMorse(char inChar);	//Translate english character to morse code
+		char morseToEng(std::string inMorse);	//Translate single morse sequence (letter, number, etc) to english character
 		void printTree(MorseNode * node);	//Print tree given root
 };
 

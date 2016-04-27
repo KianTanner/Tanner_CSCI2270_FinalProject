@@ -137,7 +137,6 @@ int main(int argc, char * argv[]) {
 	std::string engText = "", morseText = "";
 	if (inputLang == 1) { //English to morse code
 		if (inputType == 1) { //Input via text file
-			//Read english from text file
 			//FUTURE EDIT: Check to see if invalid chars
 			std::ifstream myFile;
 			std::string line;
