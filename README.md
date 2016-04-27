@@ -172,3 +172,5 @@ in morse code.
 
 ## License
 [GNU General Public License v3](http://www.gnu.org/licenses/gpl-3.0.html)
+
+![GNU GPL v3 Logo](http://www.gnu.org/graphics/gplv3-127x51.png)
