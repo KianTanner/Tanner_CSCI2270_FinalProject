@@ -1,3 +1,20 @@
+//Morse translator
+//Copyright (C) 2016  Kian Tanner
+    
+/* This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "MorseTree.h"
 #include "wav.h"
 
@@ -7,12 +24,9 @@
 #include <vector>
 #include <fstream>
 
-const short int VERSION = 1, MAJOR_REVISION = 4, MINOR_REVISION = 2;
+const short int VERSION = 1, MAJOR_REVISION = 5, MINOR_REVISION = 1;
 
 void displayHelp();
-
-//Delete tag is //DELETE ME
-//FUTURE EDIT: Allow user to not enter file extension
 
 int main(int argc, char * argv[]) {
 	short int inputLang = 0; //1:e2m, 2:m2e, 3:display help, 4:display dictionary
@@ -26,6 +40,7 @@ int main(int argc, char * argv[]) {
 	//Menu
 	while (inputLang != 1 && inputLang != 2) {
 		std::cout << "======MORSE TRANSLATOR v" << VERSION << "." << MAJOR_REVISION << "." << MINOR_REVISION << "======\n";
+		std::cout << "Copyright(C) 2016 Kian Tanner - See help for details\n";
 		std::cout << "Translate from:\n\t1. English to morse code\n\t2. Morse code to english\n\t3. Display help\n\t4. Display english to morse code dictionary\n\t5. Quit\n";
 		std::cin >> inputLang;
 		if (inputLang == 3) {
@@ -201,8 +216,86 @@ int main(int argc, char * argv[]) {
 }
 
 void displayHelp() {
+	char input = 'a';
 	std::cout << "======HELP TEXT=====\n";
-	std::cout << "======END OF HELP TEXT======" << std::endl;
+	std::cout << "Copyright (C) 2016 Kian Tanner\n";
+	
+	while (input != ('i' || 'c' || 'm' || 'h' || 'l' || 'e')) {	
+		//Menu
+		std::cout << "For information on input/output options, enter 'i'\n";
+		std::cout << "For how to contact the developer for bug reporting/suggestions, enter 'c'\n";
+		std::cout << "For how to format morse text, enter 'm'\n";
+		std::cout << "For information on entities whose help made this program possible, enter 'h'\n";
+		std::cout << "For licensing information, enter 'l'\n";
+		std::cout << "To exit this help text, enter 'e'" << std::endl;
+		
+		std::cin >> input;
+		switch (input) {
+			case 'i':
+				std::cout << "===Input/Output Options===\n";
+				std::cout << "English to Morse Code\n" << 
+							 "    Input via:     |     Output to:\n" << 
+							 "-------------------|-------------------\n" << 
+							 "    Text file      |     Text file\n" << 
+							 "  Onscreen input   |   Onscreen output\n" << 
+							 "                   |  Audio file (.wav)\n";
+				std::cout << "Morse Code to English\n" << 
+							 "    Input via:     |     Output to:\n" << 
+							 "-------------------|-------------------\n" << 
+							 "    Text file      |     Text file\n" << 
+							 "  Onscreen input   |   Onscreen output\n" << 
+							 " Audio file (.wav) |\n";
+				std::cout << "==========================" << std::endl;
+				break;
+			case 'c':
+				std::cout << "===Developer Contact Information===\n";
+				std::cout << "Please report any issues or bugs on the GitHub page for this program\n" << 
+							 "<https://github.com/KianTanner/Tanner_CSCI2270_FinalProject>, or email to " <<
+							 "\n<kian.tanner@colorado.edu>\n";
+				std::cout << "Please email any other suggestions to <kian.tanner@colorado.edu>\n";
+				std::cout << "===================================" << std::endl;
+				break;
+			case 'm':
+				std::cout << "===Morse Code Format===\n";
+				std::cout << "This program uses standard morse code with some extended prosigns.\n" << 
+							 "To view a full list of available characters, choose option 4 at the main menu.\n"; 
+				std::cout << "Morse code is represented in the standard format, with '.' and '-'. ' ' is \n" << 
+							 "used to separate words, and '/' is used to separate individual characters.\n" <<
+							 "For example, the phrase 'This is a test' is represented as \n" << 
+							 "'-/..../../... ../... .- -/./.../-' in morse code.\n";
+				std::cout << "=======================" << std::endl;
+				break;
+			case 'h':
+				std::cout << "===Many Thanks To===\n";
+				std::cout << "Reddit user AdamDe27, whose thread inspired this program\n" <<
+							 "Stanford University, for much-needed information on the WAVE format\n" <<
+							 "Wayback Machine, for archiving the Stanford University webpage\n" <<
+							 "Cplusplus.com, for its reference pages on the C++ standard library\n" << 
+							 "Dillinger.io, for an in-browser, WYSIWYG markdown editor\n";
+				std::cout << "====================" << std::endl;
+				break;
+			case 'l':
+				std::cout << "===License Information===\n";
+				std::cout << "Copyright (C) 2016 Kian Tanner\n";
+				std::cout << "This program comes with ABSOLUTELY NO WARRANTY; for details, see GNU General \n" << 
+							 "Public License v3 Section 15.\n";
+				std::cout << "This is free software, and you are welcome to redistribute it under certain \n" << 
+							 "conditions; for details, see GNU General Public License v3, Sections 4 - 7\n";
+				std::cout << "You should have received a copy of the GNU General Public License along with \n" << 
+							 "this program.  If not, see <http://www.gnu.org/licenses/>.\n";
+				std::cout << "=========================" << std::endl;
+				break;
+			case 'e':
+				std::cout << "======END OF HELP TEXT======" << std::endl;
+				return;
+				break;
+			default:
+				std::cout << input << " is not a valid input." << std::endl;
+				break;
+		}
+		input = 'a';
+	}
+	
 	return;
 }
 

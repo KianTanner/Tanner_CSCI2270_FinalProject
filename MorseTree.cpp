@@ -1,3 +1,8 @@
+//MorseTree class implementation
+//Copyright (C) 2016  Kian Tanner
+
+//Licensed under GNU GPL v3. Full disclaimer may be found in main.cpp
+
 #include "MorseTree.h"
 
 #include <iostream>

@@ -1,3 +1,8 @@
+//WAV class header
+//Copyright (C) 2016  Kian Tanner
+
+//Licensed under GNU GPL v3. Full disclaimer may be found in main.cpp
+
 #ifndef WAV_H
 #define WAV_H
 

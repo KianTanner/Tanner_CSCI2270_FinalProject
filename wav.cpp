@@ -1,13 +1,13 @@
+//WAV class implementation
+//Copyright (C) 2016  Kian Tanner
+
+//Licensed under GNU GPL v3. Full disclaimer may be found in main.cpp
+
 #include "wav.h"
 
 #include <iostream>
 #include <cstring>
 #include <cmath>
-
-/*Thanks to Stanford University for the webpage http://ccrma.stanford.edu/courses/422/projects/WaveFormat/ 
- * which had very useful information on how .wav files are formated.
- * In addition, thank you to the Wayback Machine, which was neccessary to access the above page
- */
 
 const double PI = 3.14159265358979323846264338327950288419716939937510582; //Duh
 

@@ -1,3 +1,8 @@
+//MorseTree class header
+//Copyright (C) 2016  Kian Tanner
+
+//Licensed under GNU GPL v3. Full disclaimer may be found in main.cpp
+
 #ifndef MORSETREE_H
 #define MORSETREE_H
 
