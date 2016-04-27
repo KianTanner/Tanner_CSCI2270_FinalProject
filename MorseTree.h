@@ -31,6 +31,7 @@ class MorseTree {
 		std::string inverseTimings(std::vector <short int> inTiming);	//Convert timings returned from WAV to standard morse code
 		std::string engToMorse(std::string inString);	//Translate english string to morse code
 		std::string morseToEngMult(std::string inMorse);	//Translate morse phrase to english
+		void displayDictionary();
 		void printTree();	//Print entire tree
 		std::string engToMorse(char inChar);	//Translate english character to morse code
 		char morseToEng(std::string inMorse);	//Translate single morse sequence (letter, number, etc) to english character

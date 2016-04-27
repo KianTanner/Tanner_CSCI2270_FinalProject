@@ -1,6 +1,5 @@
 #include "MorseTree.h"
 #include "wav.h"
-#include "global.h"
 
 #include <iostream>
 #include <string>
@@ -8,7 +7,9 @@
 #include <vector>
 #include <fstream>
 
-const short int VERSION = 1, MAJOR_REVISION = 4, MINOR_REVISION = 1;
+const short int VERSION = 1, MAJOR_REVISION = 4, MINOR_REVISION = 2;
+
+void displayHelp();
 
 //Delete tag is //DELETE ME
 //FUTURE EDIT: Allow user to not enter file extension
@@ -31,7 +32,7 @@ int main(int argc, char * argv[]) {
 			displayHelp();
 			inputLang = 0;
 		} else if (inputLang == 4) {
-			displayDict();
+			mTree.displayDictionary();
 			inputLang = 0;
 		} else if (inputLang == 5) {
 			return 0;
@@ -199,3 +200,11 @@ int main(int argc, char * argv[]) {
 
 	return 0;
 }
+
+void displayHelp() {
+	std::cout << "======HELP TEXT=====\n";
+	std::cout << "======END OF HELP TEXT======" << std::endl;
+	return;
+}
+
+
