@@ -23,8 +23,10 @@
 #include <cstring>
 #include <vector>
 #include <fstream>
+#include <cstdlib>
+#include <cctype>
 
-const short int VERSION = 2, MAJOR_REVISION = 0, MINOR_REVISION = 0;
+const short int VERSION = 2, MAJOR_REVISION = 0, MINOR_REVISION = 1;
 
 void displayHelp();
 
@@ -32,7 +34,7 @@ int main(int argc, char * argv[]) {
 	short int inputLang = 0; //1:e2m, 2:m2e, 3:display help, 4:display dictionary
 	short int inputType = 0; //1:text file, 2:keyboard, 3:audio file
 	short int outputType[3] = {-1, -1, -1}; //text, onscreen, audio file
-	std::string inFileName, textOutFileName, audioOutFileName;
+	std::string inFileName, textOutFileName, audioOutFileName, inputString = "";
 	
 	MorseTree mTree;
 	mTree.buildTree();
@@ -42,7 +44,15 @@ int main(int argc, char * argv[]) {
 		std::cout << "======MORSE TRANSLATOR v" << VERSION << "." << MAJOR_REVISION << "." << MINOR_REVISION << "======\n";
 		std::cout << "Copyright(C) 2016 Kian Tanner - See help for details\n";
 		std::cout << "Translate from:\n\t1. English to morse code\n\t2. Morse code to english\n\t3. Display help\n\t4. Display english to morse code dictionary\n\t5. Quit\n";
-		std::cin >> inputLang;
+		std::cin >> inputString;
+		
+		if (isdigit(inputString[0])) {
+			inputString = inputString[0];
+			inputLang = std::stoi(inputString);
+		} else {
+			inputLang = 0;
+		}
+		
 		if (inputLang == 3) {
 			displayHelp();
 			inputLang = 0;
