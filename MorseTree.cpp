@@ -43,7 +43,22 @@ MorseTree::MorseTree() {	//Constructor
 	root = r;
 }
 
-MorseTree::~MorseTree() {
+MorseTree::~MorseTree() {	//Destructor
+	removeNode(root);
+}
+
+void MorseTree::removeNode(MorseNode * node) {
+	if (node) {
+		if (node->left) {
+			removeNode(node->left);
+		}
+		if (node->right) {
+			removeNode(node->right);
+		}
+		node->parent = NULL;
+		delete node;
+	}
+	return;
 }
 
 void MorseTree::buildTree() {	//Add each node

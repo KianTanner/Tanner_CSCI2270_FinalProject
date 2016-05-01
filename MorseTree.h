@@ -44,6 +44,7 @@ class MorseTree {
 		std::string engToMorse(char inChar);	//Translate english character to morse code
 		char morseToEng(std::string inMorse);	//Translate single morse sequence (letter, number, etc) to english character
 		void printTree(MorseNode * node);	//Print tree given root
+		void removeNode(MorseNode * node);	//Delete node
 };
 
 #endif
