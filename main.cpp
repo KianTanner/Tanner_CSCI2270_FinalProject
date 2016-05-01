@@ -24,7 +24,7 @@
 #include <vector>
 #include <fstream>
 
-const short int VERSION = 1, MAJOR_REVISION = 5, MINOR_REVISION = 1;
+const short int VERSION = 1, MAJOR_REVISION = 6, MINOR_REVISION = 2;
 
 void displayHelp();
 
